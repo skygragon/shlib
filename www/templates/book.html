@@ -1,0 +1,36 @@
+<ion-view view-title="{{book.name}}">
+  <ion-content ng-show="book.isDone">
+    <br/>
+    <div class="text-center">
+      <img src="{{book.img}}" onerror="this.style.display='none'" />
+    </div>
+    <div class="list card">
+      <div class="item item-divider item-text-wrap">
+        <h2>图书信息</h2>
+      </div>
+      <div class="item item-body">
+        <h2>{{book.name}}</h2>
+        <p>ISBN: {{book.isbn || '不详'}}</p>
+        <p>{{book.author || book.rawAuthor }}</p>
+        <p>{{book.publishBy || book.rawPublish}}&nbsp;{{book.publishDate}}</p>
+        <p>{{book.info}}</p>
+      </div>
+    </div>
+
+    <div class="list card">
+      <div class="item item-divider item-text-wrap">
+        <h2>馆藏信息</h2>
+      </div>
+      <div class="item" ng-repeat="record in book.records">
+        <h2>{{record.type}} {{record.state}}</h2>
+        <p>{{record.owner}} - {{record.depart}} - {{record.id}}</p>
+      </div>
+      <div class="item">
+        <button class="button button-positive button-full" ng-click="save(book)">
+          加入收藏
+        </button>
+      </div>
+    </div>
+
+  </ion-content>
+</ion-view>

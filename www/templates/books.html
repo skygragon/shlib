@@ -1,0 +1,19 @@
+<ion-view view-title="收藏">
+  <ion-content>
+    <div class="row row-wrap">
+      <div class="item item-body col col-33 text-center" ng-repeat="book in books">
+        <a href="#/app/book/{{book.idx}}">
+          <img class="thumbnail" src="{{book.img}}" alt="{{book.name}}" />
+        </a>
+        <p>
+          <i class="ion-android-radio-button-on balanced" ng-show="book.isCK"></i>
+          <i class="ion-android-radio-button-off" ng-hide="book.isCK"></i>
+          参考
+          <i class="ion-android-radio-button-on balanced" ng-show="book.isPT"></i>
+          <i class="ion-android-radio-button-off" ng-hide="book.isPT"></i>
+          普通
+        </p>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

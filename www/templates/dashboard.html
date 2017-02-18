@@ -1,0 +1,26 @@
+<ion-view view-title="总览">
+  <ion-content>
+    <div class="list card">
+      <div class="item item-body">
+        <div class="circle">
+          <p>可以借阅</p>
+          <a class="big-number" href="#/app/books/can-borrow">
+            {{count.ck + count.pt}}
+          </a>
+        </div>
+      </div>
+      <a class="item" href="#/app/books/ck">
+        可参考外借
+        <span class="badge badge-balanced">{{count.ck}}</span>
+      </a>
+      <a class="item" href="#/app/books/pt">
+        可普通外借
+        <span class="badge badge-balanced">{{count.pt}}</span>
+      </a>
+      <a class="item" href="#/app/books/all">
+        目前已收藏
+        <span class="badge badge-light">{{count.all}}</span>
+      </a>
+    </div>
+  </ion-content>
+</ion-view>
