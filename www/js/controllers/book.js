@@ -13,12 +13,17 @@ angular.module('Controllers')
       });
   };
 
-  $scope.save = function(book) {
+  $scope.star = function() {
     $ionicLoading.show();
-    DB.updateBook(book)
+    DB.updateBook($scope.book)
       .then(function(e) {
         $ionicLoading.hide();
-        
+
+        if (!e) {
+          Stat.markDirty();
+          Stat.books.ids.push($scope.book.id);
+        }
+
         $ionicLoading.show({
           template: e || '已收藏',
           duration: 2000
@@ -26,8 +31,27 @@ angular.module('Controllers')
       });
   };
 
-  console.log(JSON.stringify($stateParams));
-  var book = Stat.books.find(function(x) {
+  $scope.unstar = function() {
+    $ionicLoading.show();
+    DB.deleteBook($scope.book)
+      .then(function(e) {
+        $ionicLoading.hide();
+
+        if (!e) {
+          Stat.markDirty();
+          var i = Stat.books.ids.indexOf($scope.book.id);
+          if (i >= 0) Stat.books.ids.splice(i, 1);
+        }
+
+        $ionicLoading.show({
+          template: e || '已取消收藏',
+          duration: 2000
+        });
+      });
+
+  };
+
+  var book = Stat.books.selected.find(function(x) {
     return x.idx === Number($stateParams.bookIdx)
   });
 
@@ -36,4 +60,8 @@ angular.module('Controllers')
   } else {
     $scope.book = book;
   }
+
+  $scope.isStared = function() {
+    return Stat.books.ids.indexOf($scope.book.id) >= 0;
+  };
 });

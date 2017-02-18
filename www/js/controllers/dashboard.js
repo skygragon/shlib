@@ -1,13 +1,41 @@
 angular.module('Controllers')
-.controller('DashboardController', function($scope, $ionicLoading, DB) {
-  DB.countBooks()
-    .then(function(count) {
-      $scope.count = count;
+.controller('DashboardController', function($scope, $rootScope,
+      $ionicLoading, DB, Stat) {
+
+  $rootScope.$on('$stateChangeSuccess',
+    function(event, toState, toParams, fromState, fromParams) {
+      if (toState.name === 'app.dashboard' && Stat.dirty.dashboard)
+        $scope.refreshCount();
     });
 
   $scope.count = {
     all: 0,
+    avail: 0,
+
     ck: 0,
-    pt: 0
+    pt: 0,
   };
+
+  $scope.refreshCount = function() {
+    DB.getBooks()
+      .then(function(books) {
+        $scope.count.all = books.length;
+        $scope.count.avail = books.filter(function(book) {
+          return book.isCK || book.isPT;
+        }).length;
+        $scope.count.ck = books.filter(function(book) {
+          return book.isCK;
+        }).length;
+        $scope.count.pt = books.filter(function(book) {
+          return book.isPT;
+        }).length;
+
+        Stat.books.ids = books.map(function(book) {
+          return book.id;
+        });
+        Stat.dirty.dashboard = false;
+      });
+  };
+
+  $scope.refreshCount();
 });

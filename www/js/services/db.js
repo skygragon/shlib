@@ -30,21 +30,6 @@ DB.getBooks = function() {
   return this.db.books.toCollection().toArray();
 };
 
-DB.countBooks = function() {
-  return DB.getBooks()
-    .then(function(books) {
-      return {
-        all: books.length,
-        ck: books.filter(function(book) {
-          return book.isCK;
-        }).length,
-        pt: books.filter(function(book) {
-          return book.isPT;
-        }).length
-      };
-    });
-};
-
 DB.updateBook = function(book) {
   var d = this.$q.defer();
 
@@ -58,6 +43,22 @@ DB.updateBook = function(book) {
         d.resolve(e);
       });
        
+  return d.promise;
+};
+
+DB.deleteBook = function(book) {
+  var d = this.$q.defer();
+
+  this.db
+    .books
+    .delete(book.id)
+    .then(function() {
+      d.resolve();
+    })
+    .catch(function(e) {
+      d.resolve(e);
+    });
+
   return d.promise;
 };
 

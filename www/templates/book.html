@@ -26,8 +26,11 @@
         <p>{{record.owner}} - {{record.depart}} - {{record.id}}</p>
       </div>
       <div class="item">
-        <button class="button button-positive button-full" ng-click="save(book)">
+        <button class="button button-positive button-full" ng-click="star()" ng-hide="isStared()">
           加入收藏
+        </button>
+        <button class="button button-assertive button-full" ng-click="unstar()" ng-show="isStared()">
+          删除收藏
         </button>
       </div>
     </div>
