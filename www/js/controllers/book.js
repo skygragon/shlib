@@ -1,5 +1,5 @@
 angular.module('Controllers')
-.controller('BookController', function($scope, $stateParams, $ionicLoading,
+.controller('BookController', function($scope, $ionicLoading,
       ShLib, Stat, DB) {
 
   $scope.fetch = function(book) {
@@ -51,9 +51,7 @@ angular.module('Controllers')
 
   };
 
-  var book = Stat.books.selected.find(function(x) {
-    return x.idx === Number($stateParams.bookIdx)
-  });
+  var book = Stat.books.selected;
 
   if (!book.isDone) {
     $scope.fetch(book);
@@ -62,6 +60,6 @@ angular.module('Controllers')
   }
 
   $scope.isStared = function() {
-    return Stat.books.ids.indexOf($scope.book.id) >= 0;
+    return $scope.book && Stat.books.ids.indexOf($scope.book.id) >= 0;
   };
 });

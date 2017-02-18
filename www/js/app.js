@@ -67,7 +67,7 @@ angular.module('starter', ['ionic', 'Controllers', 'Services'])
     })
 
   .state('app.book', {
-    url: '/book/:bookIdx',
+    url: '/book',
     views: {
       'menuContent': {
         templateUrl: 'templates/book.html',

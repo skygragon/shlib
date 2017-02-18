@@ -1,7 +1,7 @@
 var Stat = {
   books: {
-    selected: [], // current selected books in the context
-    ids: []       // ids of the books saved in db
+    selected: null, // current selected book to be displayed
+    ids: []         // ids of the books saved in db
   },
   dirty: {
     dashboard: false, // need refresh count from DB again

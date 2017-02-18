@@ -30,7 +30,7 @@ angular.module('Controllers')
           duration: 3000
         });
 
-        Stat.books.selected = $scope.books = books;
+        $scope.books = books;
 
         ctx.pageIdx = idx;
         ctx.hasPrev = (idx > 0);
@@ -40,6 +40,10 @@ angular.module('Controllers')
           ctx.hasNext = book.idx < book.idxAll;
         }
       });
+  };
+
+  $scope.select = function(book) {
+    Stat.books.selected = book;
   };
 
   $scope.prev = function() {

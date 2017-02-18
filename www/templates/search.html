@@ -10,7 +10,7 @@
     </div>
 
     <ion-list>
-      <ion-item ng-repeat="book in books" href="#/app/book/{{book.idx}}">
+      <ion-item ng-repeat="book in books" ng-click="select(book)" href="#/app/book">
         <div class="item-text-wrap">
           <h2>{{book.name}}</h2>
           <br/>

@@ -34,9 +34,13 @@ angular.module('Controllers')
             break;
         }
 
-        Stat.books.selected = $scope.books = books;
+        $scope.books = books;
         Stat.dirty.books = false;
       });
+  };
+
+  $scope.select = function(book) {
+    Stat.books.selected = book;
   };
 
   $scope.refreshBooks();
