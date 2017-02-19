@@ -7,6 +7,65 @@ var BOOK_WX_URL = 'http://reg.library.sh.cn/SHLIBWX/servlet/ShlibServlet?bookid=
 
 var BOOK_SORT = '&sort=3100023';
 
+function parseBooks(resp) {
+  var doc = new DOMParser().parseFromString(resp.data, 'text/html');
+
+  var books = _.map(doc.getElementsByClassName('mediumBoldAnchor'), function(x) {
+    var book= {
+      name: x.innerText.trim(),
+      isCK: false,  // 可参考外借
+      isPT: false,  // 可普通外借
+      isDone: false // 已更新全部信息
+    };
+
+    var m = x.attributes['href'].value.match(/&uri=([^&]+)/);
+    if (m) {
+      book.uri = m[1];
+      var parts = m[1].split('@!');
+      book.idx = Number(parts.pop()) + 1;
+      book.id = parts.pop();
+    }
+
+    return book;
+  });
+
+  if (books.length === 0) return books;
+
+  var n = Number(doc.getElementsByClassName('normalBlackFont2')[0]
+                    .getElementsByTagName('b')[0]
+                    .innerText.trim());
+
+  // FIXME: a ugly hack to complete book's info!! ipac's webpage is hard
+  //        to analyze because it uses lots of nested tables =.=
+  var attrs = _.map(doc.getElementsByClassName('normalBlackFont1'), function(x) {
+    return x.innerText.trim();
+  });
+
+  var i = 0;
+  for (var j = 0; j < attrs.length; ++j) {
+    if (attrs[j].startsWith('著者')) {
+      books[i].rawAuthor = attrs[j];
+      books[i].rawPublish = attrs[j + 1];
+      books[i].idxAll = n;
+      ++i;
+    }
+  }
+
+  return books;
+}
+
+function parseBookId(resp) {
+  var doc = new DOMParser().parseFromString(resp.data, 'text/html');
+
+  try {
+    return doc.getElementsByName('QRCode')[0]
+              .attributes['src'].value
+              .split('bib=').pop();
+  } catch(e) {
+    return null;
+  }
+}
+
 ShLib.searchBooks = function(term, page) {
   var url = BOOKS_SEARCH_URL.replace('{term}', encodeURIComponent(term))
                             .replace('{page}', page + 1)
@@ -15,50 +74,18 @@ ShLib.searchBooks = function(term, page) {
   console.log('get url: ' + url);
   return this.$http.get(url)
     .then(function(resp) {
-      var doc = new DOMParser().parseFromString(resp.data, 'text/html');
-
-      var books = _.map(doc.getElementsByClassName('mediumBoldAnchor'), function(x) {
-        var book= {
-          name: x.innerText.trim(),
-          isCK: false,  // 可参考外借
-          isPT: false,  // 可普通外借
-          isDone: false // 已更新全部信息
-        };
-
-        var m = x.attributes['href'].value.match(/&uri=([^&]+)/);
-        if (m) {
-          book.uri = m[1];
-          var parts = m[1].split('@!');
-          book.idx = Number(parts.pop()) + 1;
-          book.id = parts.pop();
-        }
-
-        return book;
-      });
-
-      if (books.length === 0) return books;
-
-      var n = Number(doc.getElementsByClassName('normalBlackFont2')[0]
-                        .getElementsByTagName('b')[0]
-                        .innerText.trim());
-
-      // FIXME: a ugly hack to complete book's info!! ipac's webpage is hard
-      //        to analyze because it uses lots of nested tables =.=
-      var attrs = _.map(doc.getElementsByClassName('normalBlackFont1'), function(x) {
-        return x.innerText.trim();
-      });
-
-      var i = 0;
-      for (var j = 0; j < attrs.length; ++j) {
-        if (attrs[j].startsWith('著者')) {
-          books[i].rawAuthor = attrs[j];
-          books[i].rawPublish = attrs[j + 1];
-          books[i].idxAll = n;
-          ++i;
-        }
+      var id = parseBookId(resp);
+      if (id) {
+        // found only 1 result
+        var book = {id: id};
+        return ShLib.getBookById(book)
+          .then(function(book) {
+            return [book];
+          })
+      } else {
+        // found multiple results
+        return parseBooks(resp);
       }
-
-      return books;
     }, function(resp) {
       console.log('Failed to get ' + url + ', status=' + resp.status);
       return null;
@@ -74,13 +101,7 @@ ShLib.getBook = function(book) {
   console.log('get url: ' + url);
   return this.$http.get(url)
     .then(function(resp) {
-      var doc = new DOMParser().parseFromString(resp.data, 'text/html');
-
-      var id = doc.getElementsByName('QRCode')[0]
-                  .attributes['src'].value
-                  .split('bib=').pop();
-      book.id = id;
-
+      book.id = parseBookId(resp);
       return ShLib.getBookById(book);
     });
 };
@@ -92,6 +113,9 @@ ShLib.getBookById = function(book) {
   return ShLib.$http.get(url)
     .then(function(resp) {
       var doc = new DOMParser().parseFromString(resp.data, 'text/html');
+
+      if (!book.name)
+        book.name = doc.getElementsByTagName('h3')[0].innerText.trim();
 
       book.img = doc.getElementsByClassName('thumbnail')[0]
                     .getElementsByTagName('img')[0]

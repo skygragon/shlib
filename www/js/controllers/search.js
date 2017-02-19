@@ -1,6 +1,6 @@
 angular.module('Controllers')
 .controller('SearchController', function($scope, $ionicLoading, $ionicLoading,
-      ShLib, Stat) {
+      $state, ShLib, Stat) {
 
   var ctx = {
     term: '',
@@ -29,6 +29,12 @@ angular.module('Controllers')
           template: '未找到馆藏记录',
           duration: 3000
         });
+
+        if (books.length === 1) {
+          $scope.select(books[0]);
+          $state.go('app.book');
+          return;
+        }
 
         $scope.books = books;
 
