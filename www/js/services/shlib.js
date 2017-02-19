@@ -5,9 +5,12 @@ var BOOK_SEARCH_URL = 'http://ipac.library.sh.cn/ipac20/ipac.jsp?uri={uri}';
 var BOOK_ISBN_URL = 'http://ipac.library.sh.cn/ipac20/ipac.jsp?index=ISBN&term={isbn}';
 var BOOK_WX_URL = 'http://reg.library.sh.cn/SHLIBWX/servlet/ShlibServlet?bookid={id}&apid=ShlibBookDetailServiceImpl';
 
+var BOOK_SORT = '&sort=3100023';
+
 ShLib.searchBooks = function(term, page) {
-  var url = BOOKS_SEARCH_URL.replace('{term}', term.replace(/\s+/g, '+'))
-                            .replace('{page}', page + 1);
+  var url = BOOKS_SEARCH_URL.replace('{term}', encodeURIComponent(term))
+                            .replace('{page}', page + 1)
+                            + BOOK_SORT;
 
   console.log('get url: ' + url);
   return this.$http.get(url)
