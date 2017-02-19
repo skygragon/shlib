@@ -48,7 +48,7 @@ ShLib.searchBooks = function(term, page) {
         return x.innerText.trim();
       });
 
-      var i = 0; 
+      var i = 0;
       for (var j = 0; j < attrs.length; ++j) {
         if (attrs[j].startsWith('著者')) {
           books[i].rawAuthor = attrs[j];
@@ -86,63 +86,68 @@ ShLib.getBook = function(book) {
 };
 
 ShLib.getBookById = function(book) {
-    var url = BOOK_WX_URL.replace('{id}', book.id);
-    console.log('get url: ' + url);
+  var url = BOOK_WX_URL.replace('{id}', book.id);
+  console.log('get url: ' + url);
 
-    return ShLib.$http.get(url)
-      .then(function(resp) {
-        var doc = new DOMParser().parseFromString(resp.data, 'text/html');
+  return ShLib.$http.get(url)
+    .then(function(resp) {
+      var doc = new DOMParser().parseFromString(resp.data, 'text/html');
 
-        book.img = doc.getElementsByClassName('thumbnail')[0]
-                      .getElementsByTagName('img')[0]
-                      .attributes['src'].value;
+      book.img = doc.getElementsByClassName('thumbnail')[0]
+                    .getElementsByTagName('img')[0]
+                    .attributes['src'].value;
 
-        var items = doc.getElementsByTagName('p');
-        _.each(items, function(item) {
-          var parts = item.innerText.trim().split(':');
-          if (parts.length !== 2) return;
+      var items = doc.getElementsByTagName('p');
+      _.each(items, function(item) {
+        var parts = item.innerText.trim().split(':');
+        if (parts.length !== 2) return;
 
-          switch(parts[0]) {
-            case '作者': book.author = parts[1]; break;
-            case 'ISBN': book.isbn = parts[1]; break;
-            case '出版社': book.publishBy = parts[1]; break;
-            case '出版时间': book.publishDate = parts[1]; break;
-          }
-        });
-
-        book.info = angular.element(doc.getElementsByClassName('text-info')[0])
-                           .next().text().trim();;
-
-        items = doc.getElementsByClassName('table-responsive')[0]
-                   .getElementsByTagName('tbody')[0]
-                   .getElementsByTagName('tr');
-        book.records = _.map(items, function(item) {
-          var tds = item.getElementsByTagName('td');
-          var record = {
-            owner:  tds[0].innerText.trim(),
-            type:   tds[1].innerText.trim(),
-            state:  tds[2].innerText.trim(),
-            depart: tds[3].innerText.trim(),
-            id:     tds[4].innerText.trim()
-          };
-          if (record.state === '归还') {
-            if (record.type === '参考外借资料') book.isCK = true;
-            if (record.type === '普通外借资料') book.isPT = true;
-          }
-          return record;
-        });
-
-        book.isDone = true;
-        return book;
-      })
-      .then(function(book) {
-        // save image data
-        return ShLib.Image.serialize(book.img)
-          .then(function(data) {
-            book.imgData = data;
-            return book;
-          });
+        switch(parts[0]) {
+          case '作者': book.author = parts[1]; break;
+          case 'ISBN': book.isbn = parts[1]; break;
+          case '出版社': book.publishBy = parts[1]; break;
+          case '出版时间': book.publishDate = parts[1]; break;
+        }
       });
+
+      book.info = angular.element(doc.getElementsByClassName('text-info')[0])
+                         .next().text().trim();;
+
+      items = doc.getElementsByClassName('table-responsive')[0]
+                 .getElementsByTagName('tbody')[0]
+                 .getElementsByTagName('tr');
+      book.records = _.map(items, function(item) {
+        var tds = item.getElementsByTagName('td');
+        var record = {
+          owner:  tds[0].innerText.trim(),
+          type:   tds[1].innerText.trim(),
+          state:  tds[2].innerText.trim(),
+          depart: tds[3].innerText.trim(),
+          id:     tds[4].innerText.trim()
+        };
+        if (record.state === '归还') {
+          if (record.type === '参考外借资料') book.isCK = true;
+          if (record.type === '普通外借资料') book.isPT = true;
+        }
+        return record;
+      });
+
+      book.isDone = true;
+      return book;
+    })
+    .then(ShLib.Image.setData)
+    .then(function(book) {
+      if (book.imgData.length > 0) return book;
+      if (book.isbn.length === 0)  return book;
+
+      // otherwise, try to get image from china-pub!
+      return ShLib.Image.getURLFromChinaPub(book.isbn)
+        .then(function(img) {
+          book.img = img;
+          return book;
+        });
+    })
+    .then(ShLib.Image.setData);
 };
 
 angular.module('Services')
