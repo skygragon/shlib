@@ -3,7 +3,7 @@
     <div class="row row-wrap">
       <div class="item item-body col col-33 text-center" ng-repeat="book in books">
         <a ng-click="select(book)" href="#/app/book">
-          <img class="thumbnail" src="{{book.img}}" alt="{{book.name}}" />
+          <img class="thumbnail" src="{{Image.parseFromBook(book)}}" alt="{{book.name}}" />
         </a>
         <p>
           <i class="ion-android-radio-button-on balanced" ng-show="book.isCK"></i>

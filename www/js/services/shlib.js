@@ -134,12 +134,21 @@ ShLib.getBookById = function(book) {
 
         book.isDone = true;
         return book;
+      })
+      .then(function(book) {
+        // save image data
+        return ShLib.Image.serialize(book.img)
+          .then(function(data) {
+            book.imgData = data;
+            return book;
+          });
       });
 };
 
-angular.module('Services', [])
-.service('ShLib', [ '$http', '$q' ,function($http, $q) {
+angular.module('Services')
+.service('ShLib', [ '$http', '$q', 'Image', function($http, $q, Image) {
   ShLib.$http = $http;
   ShLib.$q = $q;
+  ShLib.Image = Image;
   return ShLib;
 }]);

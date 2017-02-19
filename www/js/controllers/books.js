@@ -1,6 +1,6 @@
 angular.module('Controllers')
 .controller('BooksController', function($scope, $rootScope, $ionicLoading,
-      $stateParams, DB, Stat) {
+      $stateParams, DB, Stat, Image) {
 
   $rootScope.$on('$stateChangeSuccess',
     function(event, toState, toParams, fromState, fromParams) {
@@ -42,6 +42,8 @@ angular.module('Controllers')
   $scope.select = function(book) {
     Stat.books.selected = book;
   };
+
+  $scope.Image = Image;
 
   $scope.refreshBooks();
 });

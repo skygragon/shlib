@@ -2,7 +2,7 @@
   <ion-content ng-show="book.isDone">
     <br/>
     <div class="text-center">
-      <img src="{{book.img}}" onerror="this.style.display='none'" />
+      <img src="{{Image.parseFromBook(book)}}" />
     </div>
     <div class="list card">
       <div class="item item-divider item-text-wrap">

@@ -9,12 +9,12 @@ var Stat = {
   }
 };
 
-Stat.markDirty = function() {
+Stat.setDirty = function() {
   this.dirty.dashboard = true;
   this.dirty.books = true;
 };
 
-angular.module('Services')
+angular.module('Services', [])
 .service('Stat', [ function() {
   return Stat;
 }]);

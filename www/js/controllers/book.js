@@ -1,15 +1,13 @@
 angular.module('Controllers')
 .controller('BookController', function($scope, $ionicLoading,
-      ShLib, Stat, DB) {
+      ShLib, Stat, DB, Image) {
 
   $scope.fetch = function(book) {
     $ionicLoading.show();
     ShLib.getBookById(book)
       .then(function(book) {
         $ionicLoading.hide();
-
         $scope.book = book;
-        console.log(JSON.stringify(book));
       });
   };
 
@@ -20,7 +18,7 @@ angular.module('Controllers')
         $ionicLoading.hide();
 
         if (!e) {
-          Stat.markDirty();
+          Stat.setDirty();
           Stat.books.ids.push($scope.book.id);
         }
 
@@ -38,7 +36,7 @@ angular.module('Controllers')
         $ionicLoading.hide();
 
         if (!e) {
-          Stat.markDirty();
+          Stat.setDirty();
           var i = Stat.books.ids.indexOf($scope.book.id);
           if (i >= 0) Stat.books.ids.splice(i, 1);
         }
@@ -62,4 +60,6 @@ angular.module('Controllers')
   $scope.isStared = function() {
     return $scope.book && Stat.books.ids.indexOf($scope.book.id) >= 0;
   };
+
+  $scope.Image = Image;
 });
