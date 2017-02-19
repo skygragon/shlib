@@ -43,7 +43,7 @@ function parseBooks(resp) {
 
   var i = 0;
   for (var j = 0; j < attrs.length; ++j) {
-    if (attrs[j].startsWith('著者')) {
+    if (attrs[j].indexOf('著者') >= 0) {
       books[i].rawAuthor = attrs[j];
       books[i].rawPublish = attrs[j + 1];
       books[i].idxAll = n;
