@@ -14,7 +14,22 @@ Stat.setDirty = function() {
   this.dirty.books = true;
 };
 
-angular.module('Services', [])
-.service('Stat', [ function() {
+Stat.update = function() {
+  return DB.getBooks()
+    .then(function(books) {
+      var promises = books.map(function(book) {
+        return Stat.ShLib
+          .getBookById(book)
+          .then(Stat.DB.updateBook);
+      });
+      return Stat.$q.all(promises);
+    });
+};
+
+angular.module('Services')
+.service('Stat', [ '$q', 'DB', 'ShLib', function($q, DB, ShLib) {
+  Stat.$q = $q;
+  Stat.DB = DB;
+  Stat.ShLib = ShLib;
   return Stat;
 }]);

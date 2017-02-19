@@ -6,7 +6,7 @@ DB.init = function($q) {
 };
 
 DB.open = function() {
-  var d = this.$q.defer();
+  var d = DB.$q.defer();
 
   var db = new Dexie('shlib.db');
   db.version(1).stores({
@@ -27,13 +27,13 @@ DB.open = function() {
 };
 
 DB.getBooks = function() {
-  return this.db.books.toCollection().toArray();
+  return DB.db.books.toCollection().toArray();
 };
 
 DB.updateBook = function(book) {
-  var d = this.$q.defer();
+  var d = DB.$q.defer();
 
-  this.db
+  DB.db
       .books
       .put(book)
       .then(function(id) {
@@ -47,9 +47,9 @@ DB.updateBook = function(book) {
 };
 
 DB.deleteBook = function(book) {
-  var d = this.$q.defer();
+  var d = DB.$q.defer();
 
-  this.db
+  DB.db
     .books
     .delete(book.id)
     .then(function() {
@@ -62,7 +62,7 @@ DB.deleteBook = function(book) {
   return d.promise;
 };
 
-angular.module('Services')
+angular.module('Services', [])
 .service('DB', [ '$q' ,function($q) {
   DB.init($q);
   return DB;

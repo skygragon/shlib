@@ -17,8 +17,11 @@ angular.module('Controllers')
   };
 
   $scope.refreshCount = function() {
+    $ionicLoading.show();
     DB.getBooks()
       .then(function(books) {
+        $ionicLoading.hide();
+
         $scope.count.all = books.length;
         $scope.count.avail = books.filter(function(book) {
           return book.isCK || book.isPT;
@@ -35,6 +38,16 @@ angular.module('Controllers')
         });
         Stat.dirty.dashboard = false;
       });
+  };
+
+  $scope.update = function() {
+    $ionicLoading.show();
+    Stat.update().then(function(results) {
+      $ionicLoading.hide();
+
+      console.log('Books updated: ' + JSON.stringify(results));
+      $scope.refreshCount();
+    });
   };
 
   $scope.refreshCount();

@@ -171,7 +171,10 @@ ShLib.getBookById = function(book) {
           return book;
         });
     })
-    .then(ShLib.Image.setData);
+    .then(ShLib.Image.setData)
+    .catch(function(e) {
+      return e;
+    });
 };
 
 angular.module('Services')
