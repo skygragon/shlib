@@ -66,6 +66,23 @@ function parseBookId(resp) {
   }
 }
 
+function parseByGuess(resp, book) {
+  var id = parseBookId(resp);
+  if (id) {
+    // found only 1 result, cont'd to get details
+    book = book || {};
+    book.id = id;
+
+    return ShLib.getBookById(book)
+      .then(function(book) {
+        return [book];
+      })
+  } else {
+    // found multiple results, delay getting details
+    return parseBooks(resp);
+  }
+}
+
 ShLib.searchBooks = function(term, page) {
   var url = BOOKS_SEARCH_URL.replace('{term}', encodeURIComponent(term))
                             .replace('{page}', page + 1)
@@ -74,19 +91,9 @@ ShLib.searchBooks = function(term, page) {
   console.log('get url: ' + url);
   return this.$http.get(url)
     .then(function(resp) {
-      var id = parseBookId(resp);
-      if (id) {
-        // found only 1 result
-        var book = {id: id};
-        return ShLib.getBookById(book)
-          .then(function(book) {
-            return [book];
-          })
-      } else {
-        // found multiple results
-        return parseBooks(resp);
-      }
-    }, function(resp) {
+      return parseByGuess(resp, null);
+    })
+    .catch(function(resp) {
       console.log('Failed to get ' + url + ', status=' + resp.status);
       return null;
     });
@@ -101,8 +108,11 @@ ShLib.getBook = function(book) {
   console.log('get url: ' + url);
   return this.$http.get(url)
     .then(function(resp) {
-      book.id = parseBookId(resp);
-      return ShLib.getBookById(book);
+      return parseByGuess(resp, book);
+    })
+    .catch(function(resp) {
+      console.log('Failed to get ' + url + ', status=' + resp.status);
+      return null;
     });
 };
 

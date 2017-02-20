@@ -1,6 +1,6 @@
 angular.module('Controllers')
-.controller('SearchController', function($scope, $ionicLoading, $ionicLoading,
-      $state, ShLib, Stat) {
+.controller('SearchController', function($scope, $ionicLoading, $state,
+      ShLib, Stat) {
 
   var ctx = {
     term: '',
