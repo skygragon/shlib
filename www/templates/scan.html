@@ -1,5 +1,16 @@
 <ion-view view-title="扫描">
   <ion-content>
+    <div class="list card">
+      <div class="item item-body">
+        <p>请扫描图书背面的条形码，如下图所示:</p>
+        <img class="thumbnail" src="img/barcode.jpg" />
+      </div>
+      <div class="item">
+        <button class="item button button-positive button-full" ng-click="scan()">
+          开始扫描
+        </button>
+      </div>
+    </div>
     <ion-list>
       <ion-item ng-repeat="book in books" ng-click="select(book)" href="#/app/book">
         <div class="item-text-wrap">

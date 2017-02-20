@@ -22,12 +22,12 @@ angular.module('Controllers')
 
         if (!books) return $ionicLoading.show({
             template: '查询馆藏失败，请检查网络连接',
-            duration: 3000
+            duration: 2000
         });
 
         if (books.length === 0) $ionicLoading.show({
           template: '未找到馆藏记录',
-          duration: 3000
+          duration: 2000
         });
 
         if (books.length === 1) {
