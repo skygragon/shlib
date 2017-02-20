@@ -35,7 +35,7 @@ DB.updateBook = function(book) {
 
   DB.db
       .books
-      .put(book)
+      .put(_.omit(book, '$$hashKey'))
       .then(function(id) {
         d.resolve();
       })
