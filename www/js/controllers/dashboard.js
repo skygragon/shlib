@@ -17,10 +17,8 @@ angular.module('Controllers')
   };
 
   $scope.refreshCount = function() {
-    $ionicLoading.show();
     DB.getBooks()
       .then(function(books) {
-        $ionicLoading.hide();
 
         $scope.count.all = books.length;
         $scope.count.avail = books.filter(function(book) {
