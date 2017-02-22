@@ -1,6 +1,6 @@
 angular.module('Controllers')
 .controller('SearchController', function($scope, $ionicLoading, $state,
-      ShLib, Stat) {
+      $cordovaKeyboard, ShLib, Stat) {
 
   var ctx = {
     term: '',
@@ -14,6 +14,11 @@ angular.module('Controllers')
     ctx.hasPrev = false;
     ctx.hasNext = false;
 
+    try {
+      $cordovaKeyboard.close();
+    } catch(e) {
+      console.log(e.message);
+    }
     $ionicLoading.show();
 
     ShLib.searchBooks(ctx.term, idx)

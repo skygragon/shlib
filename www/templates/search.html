@@ -1,12 +1,10 @@
 <ion-view view-title="搜索">
   <ion-content>
-    <div class="item-input-inset">
-      <label class="item-input-wrapper">
-        <input type="text" ng-model="ctx.term" placeholder="图书名称或者ISBN" />
+    <div class="list list-inset">
+      <label class="item item-input">
+        <i class="icon ion-search placeholder-icon"></i>
+        <input type="search" ng-model="ctx.term" placeholder="图书名称或者ISBN" ng-enter="show(0)"/>
       </label>
-      <button class="button button-clear button-dark" ng-click="show(0)">
-        <i class="icon ion-search"></i>
-      </button>
     </div>
 
     <ion-list>
@@ -23,7 +21,7 @@
       </ion-item>
     </ion-list>
 
-    <div class="item" ng-show="books.length">
+    <div class="item" ng-show="books.length && (ctx.hasPrev || ctx.hasNext)">
       <div class="button-bar">
         <button style="border: 1px solid;" class="button button-positive icon-left ion-chevron-left"
           ng-click="prev()" ng-show="ctx.hasPrev">
