@@ -1,12 +1,6 @@
-// Ionic Starter App
-
-// angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
-// the 2nd parameter is an array of 'requires'
-// 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'ngCordova', 'Controllers', 'Services'])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, $rootScope, $ionicHistory, $ionicLoading) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -20,6 +14,26 @@ angular.module('starter', ['ionic', 'ngCordova', 'Controllers', 'Services'])
       StatusBar.styleDefault();
     }
   });
+
+  $ionicPlatform.registerBackButtonAction(function(e){
+    if ($rootScope.backButtonPressedOnceToExit) {
+      ionic.Platform.exitApp();
+    } else if ($ionicHistory.backView()) {
+      $ionicHistory.goBack();
+    } else {
+      $rootScope.backButtonPressedOnceToExit = true;
+      $ionicLoading.show({
+        template: '再按一次退出上图助手',
+        duration: 750
+      });
+      setTimeout(function(){
+        $rootScope.backButtonPressedOnceToExit = false;
+      }, 1500);
+    }
+    e.preventDefault();
+    return false;
+  }, 101);
+
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
