@@ -183,7 +183,8 @@ ShLib.getBookById = function(book) {
     })
     .then(ShLib.Image.setData)
     .catch(function(e) {
-      return e;
+      console.log(e.message);
+      return book;
     });
 };
 
