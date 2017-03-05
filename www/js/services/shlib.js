@@ -119,6 +119,7 @@ ShLib.getBook = function(book) {
 ShLib.getBookById = function(book) {
   var url = BOOK_WX_URL.replace('{id}', book.id);
   console.log('get url: ' + url);
+  book.isCK = book.isPT = book.isDone = false;
 
   return ShLib.$http.get(url)
     .then(function(resp) {
