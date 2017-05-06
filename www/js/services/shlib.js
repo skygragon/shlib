@@ -10,46 +10,49 @@ var BOOK_SORT = '&sort=3100023';
 function parseBooks(resp) {
   var doc = new DOMParser().parseFromString(resp.data, 'text/html');
 
-  var books = _.map(doc.getElementsByClassName('mediumBoldAnchor'), function(x) {
-    var book= {
-      name: x.innerText.trim(),
-      isCK: false,  // 可参考外借
-      isPT: false,  // 可普通外借
-      isDone: false // 已更新全部信息
-    };
-
-    var m = x.attributes['href'].value.match(/&uri=([^&]+)/);
-    if (m) {
-      book.uri = m[1];
-      var parts = m[1].split('@!');
-      book.idx = Number(parts.pop()) + 1;
-      book.id = parts.pop();
-    }
-
-    return book;
-  });
-
-  if (books.length === 0) return books;
-
   var n = Number(doc.getElementsByClassName('normalBlackFont2')[0]
                     .getElementsByTagName('b')[0]
                     .innerText.trim());
 
-  // FIXME: a ugly hack to complete book's info!! ipac's webpage is hard
-  //        to analyze because it uses lots of nested tables =.=
-  var attrs = _.map(doc.getElementsByClassName('normalBlackFont1'), function(x) {
-    return x.innerText.trim();
-  });
+  var forms = doc.getElementsByName('summary');
+  if (forms.length == 0) return [];
 
-  var i = 0;
-  for (var j = 0; j < attrs.length; ++j) {
-    if (attrs[j].indexOf('著者') >= 0) {
-      books[i].rawAuthor = attrs[j];
-      books[i].rawPublish = attrs[j + 1];
-      books[i].idxAll = n;
-      ++i;
-    }
-  }
+  var books = _.chain(forms[0].nextSibling.nextSibling.childNodes)
+    .filter(function(x) { return x.nodeName == 'TABLE'; })
+    .map(function(table) {
+      var x = table.getElementsByClassName('mediumBoldAnchor')[0];
+      var book= {
+        name: x.innerText.trim(),
+        idxAll: n,
+        isCK: false,  // 可参考外借
+        isPT: false,  // 可普通外借
+        isDone: false // 已更新全部信息
+      };
+
+      var m = x.attributes['href'].value.match(/&uri=([^&]+)/);
+      if (m) {
+        book.uri = m[1];
+        var parts = m[1].split('@!');
+        book.idx = Number(parts.pop()) + 1;
+        book.id = parts.pop();
+      }
+
+      var attrs = _.map(table.getElementsByClassName('normalBlackFont1'), function(x) {
+        return x.innerText.trim();
+      });
+
+      for (var j = 0; j < attrs.length; ++j) {
+        if (attrs[j].indexOf('著者') >= 0) {
+          book.rawAuthor = attrs[j];
+          book.rawPublish = attrs[j + 1];
+          break;
+        }
+      }
+
+      // console.log(JSON.stringify(book));
+      return book;
+    })
+    .value();
 
   return books;
 }
