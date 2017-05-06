@@ -16,21 +16,17 @@
 
 自己想看的书却可能被别人先借走了，过了1个多月书虽然还回来了，但自己却早已忘了这码事。没关系，先`收藏`下来过几天再看看。
 
-<kbd><img src="https://github.com/skygragon/shlib/blob/master/screenshots/favorites.png" width="275" /></kbd>
-<kbd><img src="https://github.com/skygragon/shlib/blob/master/screenshots/book1.png" width="275" /></kbd>
-<kbd><img src="https://github.com/skygragon/shlib/blob/master/screenshots/book2.png" width="275" /></kbd>
+<img src="https://github.com/skygragon/shlib/blob/master/screenshots/favorites.png" width="275" /><img src="https://github.com/skygragon/shlib/blob/master/screenshots/book1.png" width="275" /><img src="https://github.com/skygragon/shlib/blob/master/screenshots/book2.png" width="275" />
 
 ## 有时
 
 看到朋友桌上有本书貌似还挺有趣，以后有时间也想看看，先用手机`扫描`一下加入收藏吧。
 
-<kbd><img src="https://github.com/skygragon/shlib/blob/master/screenshots/scan.png" width="275" /></kbd>
-<kbd><img src="https://github.com/skygragon/shlib/blob/master/screenshots/search.png" width="275" /></kbd>
+<img src="https://github.com/skygragon/shlib/blob/master/screenshots/scan.png" width="275" /><img src="https://github.com/skygragon/shlib/blob/master/screenshots/search.png" width="275" />
 
 ## 有时
 
 还书的日子到了，要不还书的时候顺便再借几本？嗯，先看看`总览`里面有哪些书可以借了。
 
-<kbd><img src="https://github.com/skygragon/shlib/blob/master/screenshots/menu.png" width="275" /></kbd>
-<kbd><img src="https://github.com/skygragon/shlib/blob/master/screenshots/dashboard.png" width="275" /></kbd>
+<img src="https://github.com/skygragon/shlib/blob/master/screenshots/menu.png" width="275" /><img src="https://github.com/skygragon/shlib/blob/master/screenshots/dashboard.png" width="275" />
 
