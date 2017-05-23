@@ -31,7 +31,7 @@ export class SearchPage {
     if (step == 0) this.pageIdx = 0;
     this.pageIdx += step;
     
-    let loading = this.ui.showLoading('');
+    let loading = this.ui.showLoading();
 
     this.shlib.searchBooks(this.term, this.pageIdx)
       .then(books => {
@@ -51,6 +51,10 @@ export class SearchPage {
         let lastBook = books.length > 0 && books[books.length - 1];
         this.hasPrev = this.pageIdx > 0;
         this.hasNext = lastBook && lastBook.idx < lastBook.idxAll;
+      })
+      .catch(e => {
+        loading.dismiss();
+        this.ui.showMessage(e);
       });
 	}
 

@@ -55,7 +55,7 @@ export class HomePage {
 	}
 
 	update() {
-    let loading = this.ui.showLoading('');
+    let loading = this.ui.showLoading('正在更新...');
     this.db.getBooks()
       .then(books => Promise.all(_.map(books, book => {
         book.isDone = false;

@@ -7,6 +7,7 @@ import { Book } from '../../models/book';
 import { DBService } from '../../services/db';
 import { ImageService } from '../../services/image';
 import { SHLibService } from '../../services/shlib';
+import { UIService } from '../../services/ui';
 
 @Component({
   selector: 'page-book',
@@ -22,12 +23,16 @@ export class BookPage {
     public navParams: NavParams,
     public db: DBService,
     public image: ImageService,
-    public shlib: SHLibService
+    public shlib: SHLibService,
+    public ui: UIService
   ) {
     this.pages = navParams.get('pages');
     this.book = navParams.get('book');
     if (!this.book.isDone) {
-      shlib.getBookById(this.book);
+      let loading = this.ui.showLoading();
+      shlib.getBookById(this.book)
+        .then(() => loading.dismiss())
+        .catch(() => loading.dismiss());
     }
   }
 

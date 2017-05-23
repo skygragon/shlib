@@ -9,14 +9,21 @@ export class UIService {
     public toastCtrl: ToastController
   ) {}
 
-  showLoading(msg) {
-    let loading = this.loadingCtrl.create({ spinner: 'bubbles', content: msg });
+  showLoading(msg = '') {
+    let loading = this.loadingCtrl.create({
+      spinner: 'bubbles',
+      content: msg
+    });
     loading.present();
     return loading;
   }
 
   showMessage(msg) {
-    let toast = this.toastCtrl.create({ message: msg, duration: 3000, position: 'middle' });
+    let toast = this.toastCtrl.create({
+      message: msg,
+      duration: 3000,
+      cssClass: 'toast'
+    });
     toast.present();
   }
 }
