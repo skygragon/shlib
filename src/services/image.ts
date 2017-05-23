@@ -12,8 +12,10 @@ export class ImageService {
   constructor(private http: Http) {}
 
   setImage(book: Book) {
-    return this.setImageData(book)
-      .then(book => this.tryChinaPub(book))
+    let img = book.img;
+    return this.tryChinaPub(book)
+      .then(book => this.setImageData(book))
+      .catch(book => { book.img = img; return book; })
       .then(book => this.setImageData(book))
       .catch(() => console.log(`failed to set image to book ${book.id}`))
   }
@@ -30,6 +32,7 @@ export class ImageService {
       .toPromise()
       .then(res => {
         book.imgData = base64js.fromByteArray(new Uint8Array(res.arrayBuffer()));
+        console.log(`got imgData: ${book.imgData.length}`);
         return book;
       });
   }
@@ -52,6 +55,7 @@ export class ImageService {
       .then(res => {
         let $ = cheerio.load(res.text());
         book.img = $('.aimg img').attr('file').replace('/cover.jpg', '/shupi.jpg');
+        console.log(`got img: ${book.img}`);
         return book;
       });
   }

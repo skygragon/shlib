@@ -64,7 +64,6 @@ export class SHLibService {
 
 	parseBooks($) {
     let n = Number($('.normalBlackFont2 b').first().text());
-    console.log(n);
 
 		let forms = $('form[name=summary]');
 		if (forms.length == 0) return [];
