@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+		<ion-title>搜索</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+	<ion-searchbar placeholder="图书名称或者ISBN" [(ngModel)]="term" (keyup.enter)="searchBooks(0)"></ion-searchbar>
+	<ion-list>
+		<button ion-item text-wrap *ngFor="let book of books" (click)="showBook(book)">
+      <h2>{{book.name}}</h2>
+      <br/>
+      <p>{{book.rawAuthor}}</p>
+      <p>{{book.rawPublish}}
+        <span class="to-right">{{book.idx}} / {{book.idxAll}}</span>
+      </p>
+		</button>
+	</ion-list>
+
+  <ion-buttons text-center>
+    <button ion-button *ngIf="hasPrev" (click)="searchBooks(-1)">上一页</button>
+    <button ion-button *ngIf="hasNext" (click)="searchBooks(1)">下一页</button>
+  </ion-buttons>
+</ion-content>

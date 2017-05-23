@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{book.name}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-item-divider color="light">图书信息</ion-item-divider>
+    <ion-card-content padding>
+      <br/>
+      <img src="{{getImage(book)}}" width="auto"/>
+      <br/>
+      <h2>{{book.name}}</h2>
+      <br/>
+      <p>ISBN: {{book.isbn || '不详'}}</p>
+      <br/>
+      <p>{{book.author || book.rawAuthor }}</p>
+      <p>{{book.publishBy || book.rawPublish}}&nbsp;{{book.publishDate}}</p>
+      <br/>
+      <p>{{book.info}}</p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-item-divider color="light">馆藏信息</ion-item-divider>
+    <ion-card-content>
+       <div ion-item *ngFor="let record of book.records" no-padding>
+          <h2>{{record.type}}</h2>
+          <p> {{record.id}} </p>
+          <p>{{record.owner}} - {{record.depart}}</p>
+          <ion-badge [color]="record.color" item-right>{{record.state}}</ion-badge>
+      </div>
+      <ion-buttons text-center>
+        <button ion-button full (click)="addBook(book)" *ngIf="!isStarred(book)">加入收藏</button>
+        <button ion-button full (click)="removeBook(book)" *ngIf="isStarred(book)" color="danger">删除收藏</button>
+      </ion-buttons>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

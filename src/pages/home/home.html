@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>总览</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+	<ion-card>
+    <ion-card-header>
+			<div class="circle">
+				<p>可以借阅</p>
+				<a class="big-number" (click)="showBooks('avail')">{{avail}}</a>
+			</div>
+    </ion-card-header>
+
+    <button ion-item (click)="showBooks('ck')">
+      可参考外借
+      <ion-badge item-right color="secondary">{{ck}}</ion-badge>
+    </button>
+    <button ion-item (click)="showBooks('pt')">
+      可普通外借
+      <ion-badge item-right color="secondary">{{pt}}</ion-badge>
+    </button>
+    <button ion-item (click)="showBooks('all')">
+      目前已收藏
+      <ion-badge item-right color="light">{{all}}</ion-badge>
+    </button>
+
+    <ion-card-header>
+			<button ion-button full (click)="update()">
+				更新借阅信息
+			</button>
+    </ion-card-header>
+	</ion-card>
+</ion-content>

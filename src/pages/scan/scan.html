@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>扫描</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-card padding>
+    <ion-card-content>
+      <p>请扫描图书背面的条形码，如下图所示:</p>
+      <img src="assets/icon/barcode.jpg" />
+      <button ion-button full (click)="scan()">开始扫描</button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

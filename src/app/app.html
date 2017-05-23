@@ -1,0 +1,31 @@
+<ion-menu [content]="content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>上图助手</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <ion-item-group>
+      <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
+        <ion-icon [name]="p.icon" item-left></ion-icon>
+        {{p.title}}
+      </button>
+
+      <ion-item-divider color="light">关于</ion-item-divider>
+      <ion-item>
+        <ion-icon name="phone-portrait" item-left></ion-icon>
+        版本
+        <span item-right class="small">v1.0.0</span>
+      </ion-item>
+      <ion-item>
+        <ion-icon name="logo-github" item-left></ion-icon>
+        GitHub
+        <span item-right class="small">skygragon/shlib</span>
+      </ion-item>
+    </ion-item-group>
+  </ion-content>
+</ion-menu>
+
+<!-- Disable swipe-to-go-back because it's poor UX to combine STGB with side menus -->
+<ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>
