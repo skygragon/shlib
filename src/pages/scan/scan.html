@@ -15,4 +15,15 @@
       <button ion-button full (click)="scan()">开始扫描</button>
     </ion-card-content>
   </ion-card>
+
+	<ion-list>
+		<button ion-item text-wrap *ngFor="let book of books" (click)="showBook(book)">
+      <h2>{{book.name}}</h2>
+      <br/>
+      <p>{{book.rawAuthor}}</p>
+      <p>{{book.rawPublish}}
+        <span class="to-right">{{book.idx}} / {{book.idxAll}}</span>
+      </p>
+		</button>
+	</ion-list>
 </ion-content>

@@ -8,9 +8,9 @@ import * as cheerio from 'cheerio';
 import { Book, Record } from '../models/book';
 import { ImageService } from '../services/image';
 
-const BOOKS_SEARCH_URL = 'http://ipac.library.sh.cn/ipac20/ipac.jsp?index=.TW&term={term}&page={page}';
+const BY_KEY_URL = 'http://ipac.library.sh.cn/ipac20/ipac.jsp?index=.TW&term={term}&page={page}';
 //const BOOK_SEARCH_URL = 'http://ipac.library.sh.cn/ipac20/ipac.jsp?uri={uri}';
-//const BOOK_ISBN_URL = 'http://ipac.library.sh.cn/ipac20/ipac.jsp?index=ISBN&term={isbn}';
+const BY_ISBN_URL = 'http://ipac.library.sh.cn/ipac20/ipac.jsp?index=ISBN&term={isbn}';
 const BOOK_WX_URL = 'http://reg.library.sh.cn/SHLIBWX/servlet/ShlibServlet?bookid={id}&apid=ShlibBookDetailServiceImpl';
 const BOOK_SORT = '&sort=3100023';
 
@@ -18,11 +18,7 @@ const BOOK_SORT = '&sort=3100023';
 export class SHLibService {
   constructor(private http: Http, private image: ImageService) {}
 
-  searchBooks(term, page) {
-    let url = BOOKS_SEARCH_URL.replace('{term}', encodeURIComponent(term))
-                              .replace('{page}', page + 1)
-                              + BOOK_SORT;
-
+  searchBooks(url: string) {
     console.log(`get url: ${url}`);
     return this.http.get(url)
       .toPromise()
@@ -30,7 +26,19 @@ export class SHLibService {
       .catch(err => { console.log(`Failed to get ${url}: ${err}`); return null; });
   };
 
-	getBookById = function(book: Book) {
+  searchByKey(term, page) {
+    let url = BY_KEY_URL.replace('{term}', encodeURIComponent(term))
+                        .replace('{page}', page + 1)
+                        + BOOK_SORT;
+    return this.searchBooks(url);
+  }
+
+  searchByISBN(isbn) {
+    let url = BY_ISBN_URL.replace('{isbn}', isbn) + BOOK_SORT;
+    return this.searchBooks(url);
+  }
+
+	getBookById(book: Book) {
 		var url = BOOK_WX_URL.replace('{id}', book.id);
     console.log(`get url: ${url}`);
 		book.isCK = book.isPT = book.isDone = false;
@@ -44,6 +52,7 @@ export class SHLibService {
 
   parseByGuess($, book: Book) {
 		let id = this.parseBookId($);
+    console.log(`try to find book id = ${id}`);
 		if (id) {
 			// found only 1 result, cont'd to get details
 			book.id = id;
@@ -56,10 +65,8 @@ export class SHLibService {
 
 	parseBookId($) {
 		try {
-			return $.getElementsByName('QRCode')[0]
-								.attributes['src'].value
-								.split('bib=').pop();
-		} catch(e) { return null; }
+			return $('iframe[name=QRCode]').attr('src').split('bib=').pop();
+    } catch(e) { return null; }
 	}
 
 	parseBooks($) {

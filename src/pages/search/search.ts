@@ -33,7 +33,7 @@ export class SearchPage {
     
     let loading = this.ui.showLoading();
 
-    this.shlib.searchBooks(this.term, this.pageIdx)
+    this.shlib.searchByKey(this.term, this.pageIdx)
       .then(books => {
         loading.dismiss();
         if (!books) {

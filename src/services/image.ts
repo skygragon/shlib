@@ -17,7 +17,7 @@ export class ImageService {
       .then(book => this.setImageData(book))
       .catch(book => { book.img = img; return book; })
       .then(book => this.setImageData(book))
-      .catch(() => console.log(`failed to set image to book ${book.id}`))
+      .catch(() => { console.log(`failed to set image to book ${book.id}`); return book; });
   }
 
   setImageData(book: Book) {

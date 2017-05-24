@@ -1,40 +1,46 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
+
+import { Book } from '../../models/book';
+import { SHLibService } from '../../services/shlib';
+import { UIService } from '../../services/ui';
+import { BookPage } from '../book/book';
 
 @Component({
   selector: 'page-scan',
   templateUrl: 'scan.html'
 })
+
 export class ScanPage {
   static title = '扫描';
   static icon = 'qr-scanner';
 
-  selectedItem: any;
-  icons: string[];
-  items: Array<{title: string, note: string, icon: string}>;
+  books: Book[] = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-    // If we navigated to this page, we will have an item available as a nav param
-    this.selectedItem = navParams.get('item');
-
-    // Let's populate this page with some filler content for funzies
-    this.icons = ['flask', 'wifi', 'beer', 'football', 'basketball', 'paper-plane',
-    'american-football', 'boat', 'bluetooth', 'build'];
-
-    this.items = [];
-    for (let i = 1; i < 11; i++) {
-      this.items.push({
-        title: 'Item ' + i,
-        note: 'This is item #' + i,
-        icon: this.icons[Math.floor(Math.random() * this.icons.length)]
-      });
-    }
+  constructor(
+    public navCtrl: NavController,
+    public shlib: SHLibService,
+    public ui: UIService
+  ) {
   }
 
-  itemTapped(event, item) {
-    // That's right, we're pushing to ourselves!
-    this.navCtrl.push(ScanPage, {
-      item: item
-    });
+  scan() {
+    let isbn = '7560926991';
+    this.shlib.searchByISBN(isbn)
+      .then(books => {
+        if (!books || books.length == 0) {
+          return this.ui.showMessage('没有找到图书记录');
+        }
+
+        if (books.length == 1) {
+          return this.showBook(books[0]);
+        }
+
+        this.books = books;
+      });
+  }
+
+  showBook(book: Book) {
+    this.navCtrl.push(BookPage, { book: book });
   }
 }

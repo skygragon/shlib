@@ -26,7 +26,7 @@ export class BookPage {
     public shlib: SHLibService,
     public ui: UIService
   ) {
-    this.pages = navParams.get('pages');
+    this.pages = navParams.get('pages') || [];
     this.book = navParams.get('book');
     if (!this.book.isDone) {
       let loading = this.ui.showLoading();
