@@ -14,7 +14,7 @@ export class Book {
 
   isbn: string = '';
   info: string = '';
-  img: string = '';
+  img: string[] = [];
   imgData: string = '';
   rawAuthor: string = '';
   rawPublish: string = '';

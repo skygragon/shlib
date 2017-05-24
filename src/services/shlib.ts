@@ -108,7 +108,7 @@ export class SHLibService {
 
   parseWXBook($, book: Book) {
     book.name = book.name || $('h3').text().trim();
-    book.img = $('.thumbnail img').attr('src');
+    book.img = [$('.thumbnail img').attr('src')];
     book.info = $('.text-info').first().next().text().trim();
 
     _.each($('p'), item => {

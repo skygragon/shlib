@@ -12,34 +12,37 @@ export class ImageService {
   constructor(private http: Http) {}
 
   setImage(book: Book) {
-    let img = book.img;
     return this.tryChinaPub(book)
-      .then(book => this.setImageData(book))
-      .catch(book => { book.img = img; return book; })
-      .then(book => this.setImageData(book))
-      .catch(() => { console.log(`failed to set image to book ${book.id}`); return book; });
+      .then(book => this.setImageData(book));
   }
 
   setImageData(book: Book) {
     if (book.imgData.length > 0) return Promise.resolve(book);
     if (book.img.length == 0) return Promise.reject(book);
+    let img = book.img[0];
+    console.log(`try get imgData: ${img}`);
 
     let options = new RequestOptions({
       responseType: ResponseContentType.ArrayBuffer
     });
 
-    return this.http.get(book.img, options)
+    return this.http.get(img, options)
       .toPromise()
       .then(res => {
         book.imgData = base64js.fromByteArray(new Uint8Array(res.arrayBuffer()));
         console.log(`got imgData: ${book.imgData.length}`);
         return book;
+      })
+      .catch(() => {
+        book.img.shift();
+        return this.setImageData(book);
       });
   }
 
   getImage(book: Book) {
     if (book.imgData) return 'data:image/png;base64,' + book.imgData;
-    return book.img;
+    if (book.img.length > 0) return book.img[0];
+    return '';
   }
 
   // try to get image from China-pub
@@ -54,7 +57,13 @@ export class ImageService {
       .toPromise()
       .then(res => {
         let $ = cheerio.load(res.text());
-        book.img = $('.aimg img').attr('file').replace('/cover.jpg', '/shupi.jpg');
+
+        let img = $('.aimg img').attr('file');
+        book.img.unshift(img);
+
+        img = img.replace('/cover.jpg', '/shupi.jpg');
+        book.img.unshift(img);
+
         console.log(`got img: ${book.img}`);
         return book;
       });
