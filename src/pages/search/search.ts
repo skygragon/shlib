@@ -31,7 +31,7 @@ export class SearchPage {
     if (step == 0) this.pageIdx = 0;
     this.pageIdx += step;
     
-    let loading = this.ui.showLoading();
+    let loading = this.ui.showLoading('正在查找图书');
 
     this.shlib.searchByKey(this.term, this.pageIdx)
       .then(books => {
