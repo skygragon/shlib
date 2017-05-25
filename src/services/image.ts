@@ -59,12 +59,14 @@ export class ImageService {
         let $ = cheerio.load(res.text());
 
         let img = $('.aimg img').attr('file');
+        console.log(`got img: ${img}`);
+        if (!img) return book;
         book.img.unshift(img);
 
         img = img.replace('/cover.jpg', '/shupi.jpg');
+        console.log(`got img: ${img}`);
         book.img.unshift(img);
 
-        console.log(`got img: ${book.img}`);
         return book;
       });
   }
