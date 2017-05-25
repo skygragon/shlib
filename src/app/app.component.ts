@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { App, Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -8,16 +8,25 @@ import { BooksPage } from '../pages/books/books';
 import { SearchPage } from '../pages/search/search';
 import { ScanPage } from '../pages/scan/scan';
 
+import { UIService } from '../services/ui';
+
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
+  lastBack: number;
   rootPage: any = HomePage;
   pages: Array<any>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+  constructor(
+    public app: App,
+    public platform: Platform,
+    public statusBar: StatusBar,
+    public splashScreen: SplashScreen,
+    public ui: UIService
+  ) {
     this.initializeApp();
     this.pages = [ HomePage, BooksPage, SearchPage, ScanPage ];
   }
@@ -28,6 +37,18 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+    });
+
+    this.platform.registerBackButtonAction(() => {
+      let _overlay = this.app._appRoot._overlayPortal.getActive();
+      let _nav = this.app.getActiveNav();
+
+      if (_overlay && _overlay.dismiss) return _overlay.dismiss();
+      if (_nav.canGoBack()) return _nav.pop();
+      if (Date.now() - this.lastBack < 800) return this.platform.exitApp();
+
+      this.ui.showMessage('再按一次退出');
+      this.lastBack = Date.now();
     });
   }
 
