@@ -45,6 +45,7 @@ export class SearchPage {
         }
 
         if (books.length == 1) {
+          return this.showBook(books[0]);
         }
 
         this.books = books;
