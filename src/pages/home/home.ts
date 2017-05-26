@@ -64,7 +64,7 @@ export class HomePage {
             .getBookById(book)
             .then(book => this.db.addBook(book));
       })))
-      .then(() => loading.dismiss())
+      .then(() => { loading.dismiss(); this.refresh(); })
       .catch(() => loading.dismiss());
 	}
 }
