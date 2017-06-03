@@ -50,6 +50,17 @@ export class BookPage {
     });
   }
 
+  updateBook(book: Book) {
+    let loading = this.ui.showLoading();
+    book.isDone = false;
+    book.imgData = '';
+    return this.shlib
+        .getBookById(book)
+        .then(book => this.db.addBook(book))
+        .then(() => loading.dismiss())
+        .catch(() => loading.dismiss());
+  }
+
   refresh() {
     _.each(this.pages, page => page.refresh());
   }

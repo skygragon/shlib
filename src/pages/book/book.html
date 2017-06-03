@@ -3,7 +3,12 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>{{book.name}}</ion-title>
+    <ion-title>图书信息</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="updateBook(book)">
+        <ion-icon name="refresh"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 

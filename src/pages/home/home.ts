@@ -59,7 +59,6 @@ export class HomePage {
     this.db.getBooks()
       .then(books => Promise.all(_.map(books, book => {
         book.isDone = false;
-        book.imgData = '';
         return this.shlib
             .getBookById(book)
             .then(book => this.db.addBook(book));
