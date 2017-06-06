@@ -1,26 +1,32 @@
-This is a starter template for [Ionic](http://ionicframework.com/docs/) projects.
+# SHLib 上图助手
 
-## How to use this template
+## 读书的那些事儿
 
-*This template does not work on its own*. The shared files for each starter are found in the [ionic2-app-base repo](https://github.com/driftyco/ionic2-app-base).
+书非借不能读也，此话一点不假。
 
-To use this template, either create a new ionic project using the ionic node.js utility, or copy the files from this repository into the [Starter App Base](https://github.com/driftyco/ionic2-app-base).
+以前在网上倒是买了不少书，可真正读完的却屈指可数，大部分都是放在书架上吃灰。偶尔想起来翻开一本读几页，而后却没有坚持读完，着实惭愧。
 
-### With the Ionic CLI:
+而借的书却不同，还书日期自然地成为了deadline，它会督促着你每天花点时间把书看完。几年前在上海图书馆办了张借书证，这些年下来断断续续竟然也读完了不少的书，效果着实可观。
 
-Take the name after `ionic2-starter-`, and that is the name of the template to be used when using the `ionic start` command below:
+后来索性在上图办了张参考外借的借书证，可选择的书多了很多，但......
 
-```bash
-$ sudo npm install -g ionic cordova
-$ ionic start mySideMenu sidemenu
-```
+再后来便有了这个`上图助手`。
 
-Then, to run it, cd into `mySideMenu` and run:
+## 有时
 
-```bash
-$ ionic cordova platform add ios
-$ ionic cordova run ios
-```
+自己想看的书却可能被别人先借走了，过了1个多月书虽然还回来了，但自己却早已忘了这码事。没关系，先`收藏`下来过几天再看看。
 
-Substitute ios for android if not on a Mac.
+<img src="https://github.com/skygragon/shlib/blob/master/screenshots/favorites.png" width="275" /><img src="https://github.com/skygragon/shlib/blob/master/screenshots/book1.png" width="275" /><img src="https://github.com/skygragon/shlib/blob/master/screenshots/book2.png" width="275" />
+
+## 有时
+
+看到朋友桌上有本书貌似还挺有趣，以后有时间也想看看，先用手机`扫描`一下加入收藏吧。
+
+<img src="https://github.com/skygragon/shlib/blob/master/screenshots/scan.png" width="275" /><img src="https://github.com/skygragon/shlib/blob/master/screenshots/search.png" width="275" />
+
+## 有时
+
+还书的日子到了，要不还书的时候顺便再借几本？嗯，先看看`总览`里面有哪些书可以借了。
+
+<img src="https://github.com/skygragon/shlib/blob/master/screenshots/menu.png" width="275" /><img src="https://github.com/skygragon/shlib/blob/master/screenshots/dashboard.png" width="275" />
 
