@@ -47,14 +47,14 @@ export class HomePage {
     });
   }
 
-	showBooks(k: string) {
+  showBooks(k: string) {
     this.navCtrl.push(BooksPage, {
       filter: this.filters[k],
       pages: [this]
     });
-	}
+  }
 
-	update() {
+  update() {
     let loading = this.ui.showLoading('正在更新...');
     this.db.getBooks()
       .then(books => Promise.all(_.map(books, book => {
@@ -65,5 +65,5 @@ export class HomePage {
       })))
       .then(() => { loading.dismiss(); this.refresh(); })
       .catch(() => loading.dismiss());
-	}
+  }
 }
