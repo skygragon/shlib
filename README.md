@@ -1,5 +1,16 @@
 # SHLib 上图助手
 
+<img src="https://raw.githubusercontent.com/skygragon/shlib/0d159128b99a2ec9df2496383422a39b585c8dee/docs/download-2.1.0.png" align="right" />
+
+上海图书馆 - 图书小助手
+
+* 快速查看收藏夹内书籍的借阅状态
+* 关键字检索馆内藏书
+* 扫描条形码检索馆内藏书
+* 收藏夹数据备份及恢复
+
+Android用户可直接扫描右侧二维码下载。
+
 ## 读书的那些事儿
 
 书非借不能读也，此话一点不假。
