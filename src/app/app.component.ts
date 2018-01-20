@@ -8,6 +8,7 @@ import { BooksPage } from '../pages/books/books';
 import { SearchPage } from '../pages/search/search';
 import { ScanPage } from '../pages/scan/scan';
 
+import { FileService } from '../services/file';
 import { UIService } from '../services/ui';
 
 @Component({
@@ -25,6 +26,7 @@ export class MyApp {
     public platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
+    public file: FileService,
     public ui: UIService
   ) {
     this.initializeApp();
@@ -56,5 +58,21 @@ export class MyApp {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
     this.nav.setRoot(page);
+  }
+
+  backup() {
+    this.file.save()
+      .then(
+        f => this.ui.showMessage('数据备份成功!\n' + f),
+        e => this.ui.showMessage('数据备份失败!\n' + e.message)
+      );
+  }
+
+  restore() {
+    this.file.load()
+      .then(
+        f => this.ui.showMessage('备份恢复成功!\n' + f),
+        e => this.ui.showMessage('备份恢复失败!\n' + e.message)
+      );
   }
 }

@@ -33,6 +33,18 @@ export class DBService {
     );
   }
 
+  setBooks(books: Book[]) {
+    return new Promise<any>(resolve =>
+      this.db.open()
+        .then(db => db.books.clear())
+        .then(() => this.db.books.bulkPut(books))
+        .then(() => {
+          this.bookIds = _.map(books, book => book.id);
+          return resolve();
+        })
+    );
+  }
+
   addBook(book: Book) {
     return new Promise<any>(resolve =>
       this.db.open()

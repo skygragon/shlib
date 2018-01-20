@@ -12,6 +12,16 @@
         {{p.title}}
       </button>
 
+      <ion-item-divider color="light">数据</ion-item-divider>
+      <button menuClose ion-item (click)="backup()">
+        <ion-icon name="log-in" item-left></ion-icon>
+        备份
+      </button>
+      <button menuClose ion-item (click)="restore()">
+        <ion-icon name="log-out" item-left></ion-icon>
+        恢复
+      </button>
+
       <ion-item-divider color="light">关于</ion-item-divider>
       <ion-item>
         <ion-icon name="phone-portrait" item-left></ion-icon>

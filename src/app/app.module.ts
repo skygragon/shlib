@@ -2,6 +2,7 @@ import { HttpModule } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { File } from '@ionic-native/file';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 
 import { MyApp } from './app.component';
@@ -11,6 +12,7 @@ import { BooksPage } from '../pages/books/books';
 import { SearchPage } from '../pages/search/search';
 import { ScanPage } from '../pages/scan/scan';
 
+import { FileService } from '../services/file';
 import { DBService } from '../services/db';
 import { ImageService } from '../services/image';
 import { SHLibService } from '../services/shlib';
@@ -45,6 +47,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   providers: [
     BarcodeScanner,
     DBService,
+    File,
+    FileService,
     ImageService,
     SHLibService,
     UIService,
