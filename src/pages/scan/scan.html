@@ -9,11 +9,10 @@
 
 <ion-content>
   <ion-card padding>
-    <ion-card-content>
-      <p>请扫描图书背面的条形码，如下图所示:</p>
-      <img src="assets/icon/barcode.jpg" />
-      <button ion-button full (click)="scan()">开始扫描</button>
-    </ion-card-content>
+    <ion-card-header>
+      <img class="demo-img" src="assets/icon/scan.png" />
+    </ion-card-header>
+    <button ion-button full (click)="scan()">扫描图书条形码</button>
   </ion-card>
 
 	<ion-list>
