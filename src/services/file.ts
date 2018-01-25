@@ -11,18 +11,23 @@ export class FileService {
   constructor(
     private file: File,
     private db: DBService
-  ) {
-    let dir;
+  ) {}
+
+  checkDir() {
+    if (this.dir) return;
     try {
-      dir = file.externalRootDirectory || file.externalDataDirectory || file.dataDirectory;
+      this.dir = this.file.externalRootDirectory ||
+                 this.file.externalDataDirectory ||
+                 this.file.dataDirectory;
     } catch (e) {
       // FIXME: hack web test where no cordova defined...
       console.log(e.message);
     }
-    this.dir = dir || './';
+    this.dir = this.dir || './';
   }
 
   save() {
+    this.checkDir();
     return new Promise<any>((resolve, reject) =>
       this.db.getBooks()
         .then(books => this.file.writeFile(this.dir, this.name, JSON.stringify(books), {replace: true}))
@@ -32,6 +37,7 @@ export class FileService {
   }
 
   load() {
+    this.checkDir();
     return new Promise<any>((resolve, reject) =>
       this.file.readAsText(this.dir, this.name)
         .then(text => this.db.setBooks(JSON.parse(text)))
