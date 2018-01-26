@@ -11,7 +11,7 @@
   <ion-grid padding>
     <ion-row>
       <ion-col col-4 *ngFor="let book of books" text-center>
-        <img class="thumbnail" src="{{getImage(book)}}" (click)="showBook(book)" />
+        <img tappable class="thumbnail" src="{{getImage(book)}}" (click)="showBook(book)" />
         <p class="small">
           <ion-icon name="square-outline" *ngIf="!book.isCK"></ion-icon>
           <ion-icon name="checkbox-outline" color="secondary" *ngIf="book.isCK"></ion-icon>
