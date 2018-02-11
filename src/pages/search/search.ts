@@ -57,7 +57,7 @@ export class SearchPage {
         loading.dismiss();
         this.ui.showMessage(e);
       });
-	}
+  }
 
   showBook(book: Book) {
     this.navCtrl.push(BookPage, { book: book });

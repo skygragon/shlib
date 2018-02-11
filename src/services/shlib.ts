@@ -38,12 +38,12 @@ export class SHLibService {
     return this.searchBooks(url);
   }
 
-	getBookById(book: Book) {
-		var url = BOOK_WX_URL.replace('{id}', book.id);
+  getBookById(book: Book) {
+    var url = BOOK_WX_URL.replace('{id}', book.id);
     console.log(`get url: ${url}`);
-		book.isCK = book.isPT = book.isDone = false;
+    book.isCK = book.isPT = book.isDone = false;
 
-		return this.http.get(url)
+    return this.http.get(url)
       .toPromise()
       .then(res => this.parseWXBook(cheerio.load(res.text()), book))
       .then(book => this.image.setImage(book))
@@ -51,60 +51,60 @@ export class SHLibService {
   }
 
   parseByGuess($, book: Book) {
-		let id = this.parseBookId($);
+    let id = this.parseBookId($);
     console.log(`try to find book id = ${id}`);
-		if (id) {
-			// found only 1 result, cont'd to get details
-			book.id = id;
-			return this.getBookById(book).then(book => [book]);
-		} else {
-			// found multiple results, delay getting details
-			return this.parseBooks($);
-		}
-	}
+    if (id) {
+      // found only 1 result, cont'd to get details
+      book.id = id;
+      return this.getBookById(book).then(book => [book]);
+    } else {
+      // found multiple results, delay getting details
+      return this.parseBooks($);
+    }
+  }
 
-	parseBookId($) {
-		try {
-			return $('iframe[name=QRCode]').attr('src').split('bib=').pop();
+  parseBookId($) {
+    try {
+      return $('iframe[name=QRCode]').attr('src').split('bib=').pop();
     } catch(e) { return null; }
-	}
+  }
 
-	parseBooks($) {
+  parseBooks($) {
     let n = Number($('.normalBlackFont2 b').first().text());
 
-		let forms = $('form[name=summary]');
-		if (forms.length == 0) return [];
+    let forms = $('form[name=summary]');
+    if (forms.length == 0) return [];
 
     return _.map(forms.children('td').children('table'),
       table => {
-				let book = new Book();
+        let book = new Book();
 
-				let name = $(table).find('.mediumBoldAnchor');
+        let name = $(table).find('.mediumBoldAnchor');
         name.find('a').remove();
-			  book.name = name.text().trim();
-				book.idxAll = n;
+        book.name = name.text().trim();
+        book.idxAll = n;
 
-				let href = name.attr('href').match(/&uri=([^&]+)/);
-				if (href) {
-					book.uri = href[1];
-					let parts = href[1].split('@!');
-					book.idx = Number(parts.pop()) + 1;
-					book.id = parts.pop();
-				}
-
-        let attrs = _.map($(table).find('.normalBlackFont1'), x => $(x).text().trim());
-				for (let j = 0; j < attrs.length; ++j) {
-					if (attrs[j].indexOf('著者') >= 0) {
-						book.rawAuthor = attrs[j];
-						book.rawPublish = attrs[j + 1];
-						break;
-					}
+        let href = name.attr('href').match(/&uri=([^&]+)/);
+        if (href) {
+          book.uri = href[1];
+          let parts = href[1].split('@!');
+          book.idx = Number(parts.pop()) + 1;
+          book.id = parts.pop();
         }
 
-				console.log(JSON.stringify(book));
-				return book;
-			});
-	}
+        let attrs = _.map($(table).find('.normalBlackFont1'), x => $(x).text().trim());
+        for (let j = 0; j < attrs.length; ++j) {
+          if (attrs[j].indexOf('著者') >= 0) {
+            book.rawAuthor = attrs[j];
+            book.rawPublish = attrs[j + 1];
+            break;
+          }
+        }
+
+        console.log(JSON.stringify(book));
+        return book;
+      });
+  }
 
   parseWXBook($, book: Book) {
     book.name = book.name || $('h3').text().trim();

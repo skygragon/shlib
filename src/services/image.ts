@@ -53,7 +53,7 @@ export class ImageService {
     let url = 'http://m.china-pub.com/touch/touchsearch.aspx?keyword=' + book.isbn;
     console.log(`get url: ${url}`);
 
-		return this.http.get(url)
+    return this.http.get(url)
       .toPromise()
       .then(res => {
         let $ = cheerio.load(res.text());

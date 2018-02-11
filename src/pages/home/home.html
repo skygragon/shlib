@@ -8,12 +8,12 @@
 </ion-header>
 
 <ion-content>
-	<ion-card>
+  <ion-card>
     <ion-card-header>
-			<div class="circle">
-				<p>可以借阅</p>
-				<a class="big-number" (click)="showBooks('avail')">{{avail}}</a>
-			</div>
+      <div class="circle">
+        <p>可以借阅</p>
+        <a class="big-number" (click)="showBooks('avail')">{{avail}}</a>
+      </div>
     </ion-card-header>
 
     <button ion-item (click)="showBooks('ck')">
@@ -30,9 +30,9 @@
     </button>
 
     <ion-card-header>
-			<button ion-button full (click)="update()">
-				更新借阅信息
-			</button>
+      <button ion-button full (click)="update()">
+        更新借阅信息
+      </button>
     </ion-card-header>
-	</ion-card>
+  </ion-card>
 </ion-content>
